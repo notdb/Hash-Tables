@@ -1,6 +1,17 @@
+import bcrypt
+
 # '''
 # Linked List hash table key/value pair
 # '''
+# We can use most of the array stuff for the insert, remove, and resize portion of the hashtable because I guess it's gonna be an array now
+# use bcrypt to create the hash (we want to do this first)
+# then do the array stuff (resizing, adding, removing) hashes
+# step 1
+# use bcrypt to create a hash
+# step 2
+# everything else
+# don't worry about duplicates until tomorrow
+# linked pair is for tomorrow
 class LinkedPair:
     def __init__(self, key, value):
         self.key = key
@@ -23,6 +34,7 @@ class HashTable:
 
         You may replace the Python hash with DJB2 as a stretch goal.
         '''
+        
         return hash(key)
 
 
