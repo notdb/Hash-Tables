@@ -34,7 +34,8 @@ class HashTable:
 
         You may replace the Python hash with DJB2 as a stretch goal.
         '''
-        
+        salt = bcrypt.gensalt()
+        key = bcrypt.hashpw(b"test", salt)
         return hash(key)
 
 
@@ -63,7 +64,13 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        if self.value >= self.capacity:
+            self.resize()
+        for i in range(self.value, key, -1):
+            self.storage[i] = self.storage[i-1]
+
+        self.storage[value] = key
+        self.value += 1
 
 
 
@@ -96,10 +103,15 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        self.capacity *= 2
+        new_storage = [None] * self.capacity
+        for i in range(self.value):
+            new_storage[i] = self.storage[i]
+        self.storage = new_storage
 
 
 
+'''
 if __name__ == "__main__":
     ht = HashTable(2)
 
@@ -127,3 +139,15 @@ if __name__ == "__main__":
     print(ht.retrieve("line_3"))
 
     print("")
+'''
+newHT = HashTable(4)
+print(newHT._hash('four'))
+
+#test = "hellos"
+
+#test.encode('utf-8')
+# gensalt will be different every time it runs
+#salt = bcrypt.gensalt()
+#print(bcrypt.hashpw(b"test", salt))
+
+
