@@ -1,5 +1,3 @@
-import bcrypt
-
 # '''
 # Linked List hash table key/value pair
 # '''
@@ -26,7 +24,7 @@ class HashTable:
     def __init__(self, capacity):
         self.capacity = capacity  # Number of buckets in the hash table
         self.storage = [None] * capacity
-
+        self.count = 0
 
     def _hash(self, key):
         '''
@@ -34,8 +32,6 @@ class HashTable:
 
         You may replace the Python hash with DJB2 as a stretch goal.
         '''
-        salt = bcrypt.gensalt()
-        key = bcrypt.hashpw(b"test", salt)
         return hash(key)
 
 
@@ -64,15 +60,14 @@ class HashTable:
 
         Fill this in.
         '''
-        if self.value >= self.capacity:
-            self.resize()
-        for i in range(self.value, key, -1):
-            self.storage[i] = self.storage[i-1]
-
-        self.storage[value] = key
-        self.value += 1
-
-
+        index = self._hash_mod(key)
+        
+        if self.storage[index] is not None:
+            print("Warning: Index collision")
+            return
+        
+        self.storage[index] = LinkedPair(key, value)
+        return self.storage[index]
 
     def remove(self, key):
         '''
@@ -82,6 +77,13 @@ class HashTable:
 
         Fill this in.
         '''
+        index = self._hash_mod(key)
+
+        if self.storage[index] is None:
+            print("Warning: Key not found")
+            return
+        self.storage[index] = None
+        
         pass
 
 
@@ -93,7 +95,13 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        index = self._hash_mod(key)
+        pair = self.storage[index]
+        print(pair)
+        if pair is None:
+            return None
+        else:
+            return self.storage[index]
 
 
     def resize(self):
@@ -105,10 +113,14 @@ class HashTable:
         '''
         self.capacity *= 2
         new_storage = [None] * self.capacity
-        for i in range(self.value):
-            new_storage[i] = self.storage[i]
-        self.storage = new_storage
 
+        for pair in self.storage:
+            if pair is None:
+                new_index = self._hash_mod(pair.key)
+                new_storage[new_index] = pair
+
+        self.storage = new_storage
+            
 
 
 '''
@@ -141,10 +153,8 @@ if __name__ == "__main__":
     print("")
 '''
 newHT = HashTable(4)
-print(newHT._hash('four'))
-
-#test = "hellos"
-
+print(newHT.insert('key-0', 'val-0'))
+print(newHT.retrieve('key-0'))
 #test.encode('utf-8')
 # gensalt will be different every time it runs
 #salt = bcrypt.gensalt()
