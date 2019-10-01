@@ -83,8 +83,8 @@ class HashTable:
             print("Warning: Key not found")
             return
         self.storage[index] = None
+        return print(f"{key} removed")
         
-        pass
 
 
     def retrieve(self, key):
@@ -155,6 +155,7 @@ if __name__ == "__main__":
 newHT = HashTable(4)
 print(newHT.insert('key-0', 'val-0'))
 print(newHT.retrieve('key-0'))
+print(newHT.remove('key-0'))
 #test.encode('utf-8')
 # gensalt will be different every time it runs
 #salt = bcrypt.gensalt()
