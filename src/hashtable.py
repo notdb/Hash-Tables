@@ -63,7 +63,8 @@ class HashTable:
         index = self._hash_mod(key)
         
         if self.storage[index] is not None:
-            print("Warning: Index collision")
+            print("Adding to next")
+            self.storage[index].next = LinkedPair(key, value)
             return
         
         self.storage[index] = LinkedPair(key, value)
@@ -96,12 +97,14 @@ class HashTable:
         Fill this in.
         '''
         index = self._hash_mod(key)
+        print(f"{index} a")
         pair = self.storage[index]
-        print(pair)
+        print(f"{pair} b")
         if pair is None:
             return None
         else:
-            return self.storage[index]
+            return pair
+                
 
 
     def resize(self):
@@ -154,11 +157,13 @@ if __name__ == "__main__":
 '''
 newHT = HashTable(4)
 print(newHT.insert('key-0', 'val-0'))
+print(newHT.insert('key-1', 'val-2'))
+print(newHT)
+print(newHT.insert('key-2', 'val-3'))
+print(newHT)
 print(newHT.retrieve('key-0'))
-print(newHT.remove('key-0'))
 #test.encode('utf-8')
 # gensalt will be different every time it runs
 #salt = bcrypt.gensalt()
 #print(bcrypt.hashpw(b"test", salt))
-
 
