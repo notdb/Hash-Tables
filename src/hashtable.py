@@ -1,6 +1,15 @@
 # '''
 # Linked List hash table key/value pair
 # '''
+# We can use most of the array stuff for the insert, remove, and resize portion of the hashtable because I guess it's gonna be an array now
+# use bcrypt to create the hash (we want to do this first)
+# then do the array stuff (resizing, adding, removing) hashes
+# step 1
+# use bcrypt to create a hash
+# step 2
+# everything else
+# don't worry about duplicates until tomorrow
+# linked pair is for tomorrow
 class LinkedPair:
     def __init__(self, key, value):
         self.key = key
@@ -15,7 +24,7 @@ class HashTable:
     def __init__(self, capacity):
         self.capacity = capacity  # Number of buckets in the hash table
         self.storage = [None] * capacity
-
+        self.count = 0
 
     def _hash(self, key):
         '''
@@ -51,9 +60,16 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
-
-
+        index = self._hash_mod(key)
+        
+        if self.storage[index] is not None:
+            print("Adding to next")
+            self.storage[index].next = LinkedPair(key, value)
+            return self.storage[index].next.value
+            
+        
+        self.storage[index] = LinkedPair(key, value)
+        return self.storage[index]
 
     def remove(self, key):
         '''
@@ -63,7 +79,14 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        index = self._hash_mod(key)
+
+        if self.storage[index] is None:
+            print("Warning: Key not found")
+            return
+        self.storage[index].key = key
+        return print(f"{key} removed")
+        
 
 
     def retrieve(self, key):
@@ -74,7 +97,17 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        index = self._hash_mod(key)
+        print(f"{index} a")
+        pair = self.storage[index]
+        print(f"{pair} b")
+        if pair is None:
+            return None
+        elif pair.key is key:
+            return pair.value
+        else:
+            return 'not found'
+                
 
 
     def resize(self):
@@ -84,10 +117,17 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        self.capacity *= 2
+        new_storage = [None] * self.capacity
 
+        for pair in self.storage:
+            if pair is None:
+                new_index = self._hash_mod(pair.key)
+                new_storage[new_index] = pair
 
-
+        self.storage = new_storage
+            
+'''
 if __name__ == "__main__":
     ht = HashTable(2)
 
@@ -115,3 +155,15 @@ if __name__ == "__main__":
     print(ht.retrieve("line_3"))
 
     print("")
+'''
+newHT = HashTable(4)
+print(newHT.insert('key-1', 'val-0'))
+print(newHT.insert('key-2', 'val-2'))
+print(newHT.insert('key-3', 'val-3'))
+print(newHT.retrieve('key-1'))
+#print(newHT.retrieve('key-0'))
+#test.encode('utf-8')
+# gensalt will be different every time it runs
+#salt = bcrypt.gensalt()
+#print(bcrypt.hashpw(b"test", salt))
+
