@@ -65,7 +65,8 @@ class HashTable:
         if self.storage[index] is not None:
             print("Adding to next")
             self.storage[index].next = LinkedPair(key, value)
-            return
+            return self.storage[index].next.value
+            
         
         self.storage[index] = LinkedPair(key, value)
         return self.storage[index]
@@ -83,7 +84,7 @@ class HashTable:
         if self.storage[index] is None:
             print("Warning: Key not found")
             return
-        self.storage[index] = None
+        self.storage[index].key = key
         return print(f"{key} removed")
         
 
@@ -102,8 +103,10 @@ class HashTable:
         print(f"{pair} b")
         if pair is None:
             return None
+        elif pair.key is key:
+            return pair.value
         else:
-            return pair
+            return 'not found'
                 
 
 
@@ -124,8 +127,6 @@ class HashTable:
 
         self.storage = new_storage
             
-
-
 '''
 if __name__ == "__main__":
     ht = HashTable(2)
@@ -156,12 +157,11 @@ if __name__ == "__main__":
     print("")
 '''
 newHT = HashTable(4)
-print(newHT.insert('key-0', 'val-0'))
-print(newHT.insert('key-1', 'val-2'))
-print(newHT)
-print(newHT.insert('key-2', 'val-3'))
-print(newHT)
-print(newHT.retrieve('key-0'))
+print(newHT.insert('key-1', 'val-0'))
+print(newHT.insert('key-2', 'val-2'))
+print(newHT.insert('key-3', 'val-3'))
+print(newHT.retrieve('key-1'))
+#print(newHT.retrieve('key-0'))
 #test.encode('utf-8')
 # gensalt will be different every time it runs
 #salt = bcrypt.gensalt()
